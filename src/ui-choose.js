@@ -11,7 +11,7 @@
         multi: false,
         active: 'selected',
         full: false, //choose的宽度，默认为null将自动获取choose的宽度；
-        colNum : null, // 每行显示的个数
+        colNum: null, // 每行显示的个数
         dataKey: 'ui-choose', //实例化后的data键值，方便后续通过data('ui-choose')取出；
         change: null, //choose值改变时的回调；
         click: null //choose元素点击时的回调，diabled时不发生。
@@ -44,7 +44,7 @@
         this.el = el;
         this._tag = this.el.prop('tagName').toLowerCase();
         this._opt = $.extend({}, defaults, opt);
-        
+
         return this._init();
     }
 
@@ -61,10 +61,10 @@
                 this.el.data(this._opt.dataKey, this);
 
             // 设置是否多选
-            if(this._tag == 'select'){
+            if (this._tag == 'select') {
                 this.multi = this.el.prop('multiple');
-            }else{
-                this.multi = this.el.attr('multiple') ?  !!this.el.attr('multiple') : this._opt.multi;
+            } else {
+                this.multi = this.el.attr('multiple') ? !!this.el.attr('multiple') : this._opt.multi;
             }
 
             // 根据不同的标签进行不同的元素组建
@@ -72,9 +72,12 @@
             if (_setFunc) {
                 _setFunc.call(this);
             }
-            if(this._opt.full){
+            if (this._opt.full) {
                 this._wrap.addClass('choose-flex');
             }
+            this._wrap.addClass(this._opt.skin);
+            if (this.multi && !this._opt.skin)
+                this._wrap.addClass('choose-type-right');
             this._bindEvent(); // 绑定事件
         },
 
@@ -85,7 +88,6 @@
             if (this._opt.itemWidth) {
                 this._items.css('width', this._opt.itemWidth);
             }
-            this._wrap.addClass(this._opt.skin);
         },
 
         // 组建并获取相关的dom元素-select;
@@ -107,7 +109,6 @@
             if (this._opt.itemWidth) {
                 this._items.css('width', this._opt.itemWidth);
             }
-            this._wrap.addClass(this._opt.skin);
             this.el.hide();
         },
 
