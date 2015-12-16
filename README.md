@@ -51,4 +51,7 @@ uc_04.change = function(value, item) {
 #兼容性
 IE8+, Chrome, Firefox, Edge, 360, Sougou 等主流浏览器;
 
+##作者
+###网站： [www.boyxing.com](http://www.boyxing.com/)
+### QQ ： [1263996779](http://wpa.qq.com/msgrd?v=3&uin=1263996779&site=qq&menu=yes)
 
