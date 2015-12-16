@@ -10,7 +10,7 @@
         skin: '',
         multi: false,
         active: 'selected',
-        full: true, //choose的宽度，默认为null将自动获取choose的宽度；
+        full: false, //choose的宽度，默认为null将自动获取choose的宽度；
         colNum : null, // 每行显示的个数
         dataKey: 'ui-choose', //实例化后的data键值，方便后续通过data('ui-choose')取出；
         change: null, //choose值改变时的回调；
