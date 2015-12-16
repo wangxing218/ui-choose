@@ -1,5 +1,6 @@
-# ui-choose
-基于jquery的选择插件
+# ui-choose 选择插件
+基于jquery的选择插件，可用于选项不太多的select、radio、checkbox等，提升用户体验！
+
 ##[demo](http://wangxing218.github.io/demo/ui-choose/test/demo.html)
 
 
