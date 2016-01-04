@@ -10,7 +10,7 @@
         skin: '',
         multi: false,
         active: 'selected',
-        full: false, //choose的宽度，默认为null将自动获取choose的宽度；
+        full: false, //是否采用flex布局，每个元素宽度相同
         colNum: null, // 每行显示的个数
         dataKey: 'ui-choose', //实例化后的data键值，方便后续通过data('ui-choose')取出；
         change: null, //choose值改变时的回调；
@@ -245,38 +245,9 @@
             return this;
         },
 
-
         // 获取或设置值
         val: function() {
             return this['_val_' + this._tag].apply(this, arguments);
-            // ul
-            /*var _oIndex = this._wrap.children('li.' + this._opt.active).index();
-            if (arguments.length === 0) {
-                return _oIndex == -1 ? null : _oIndex;
-            }
-            var _nItem = this._items.eq(valueOrIndex);
-            if (this._tag == 'select') {
-                _nItem = this._wrap.find('li[data-value="' + valueOrIndex + '"]');
-                this.el.val(valueOrIndex);
-            }
-
-            if (valueOrIndex === null) {
-                if (this.val() !== valueOrIndex)
-                    this._triggerChange(valueOrIndex);
-                this._items.removeClass(this._opt.active);
-                return;
-            }
-            // if (valueOrIndex < this._items.length && _nItem.length > 0) {
-            if (this.multi) {
-                _nItem.toggleClass(this._opt.active);
-            } else {
-                _nItem.addClass(this._opt.active).siblings('li').removeClass(this._opt.active);
-            }
-            if (this._tag == 'select') {
-                _oIndex = _oValue;
-            }
-            _oIndex != valueOrIndex ? this._triggerChange(valueOrIndex, _nItem) : null;
-            // }*/
         },
 
         // 值改变事件；
@@ -294,6 +265,24 @@
         // 显示
         show: function() {
             this._wrap.show();
+            return this;
+        },
+
+        // 全选
+        selectAll: function() {
+            if (!this.multi)
+                return this;
+            if (this._tag == 'select') {
+                this.el.find('option').not(':disabled').prop('selected', true);
+                var _val = this.el.val();
+                this.val(_val);
+            } else {
+                var _val = [];
+                this._items.not('.disabled').each(function(index, el) {
+                    _val.push(index);
+                });
+                this.val(_val);
+            }
             return this;
         }
     };

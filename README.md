@@ -45,6 +45,9 @@ uc_04.change = function(value, item) {
     console.log('change', value);
 };
 
+//全选
+uc_04.selectAll();
+
 ```
 
 
