@@ -186,7 +186,7 @@
                         this._wrap.children('li[data-value="' + _v + '"]').addClass(this._opt.active);
                     }
                 }
-                if (value !== _oValue) {
+                if ((value + '') !== (_oValue + '')) {
                     this._triggerChange(value);
                 }
             }
@@ -237,7 +237,7 @@
                         this._wrap.children('li').eq(_no).addClass(this._opt.active);
                     }
                 }
-                if (index !== _oIndex) {
+                if ((index + '') !== (_oIndex + '')) {
                     this._triggerChange(index);
                 }
             }
