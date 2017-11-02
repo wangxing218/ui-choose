@@ -258,10 +258,19 @@
 
         // 点击事件；
         click: function (value, item) {
-            this.el.find("option").each(function () {
+            var select = this.el;
+
+            select.find("option").each(function () {
                 $(this).removeAttr('selected');
             });
-            this.el.find("option[value="+value+"]").attr("selected", "selected");
+
+            if (this.multi) {
+                $(value).each(function (key, value) {
+                    select.find("option[value=" + value + "]").attr("selected", "selected");
+                });
+            } else {
+                select.find("option[value=" + value + "]").attr("selected", "selected");
+            }
         },
 
         // 隐藏
