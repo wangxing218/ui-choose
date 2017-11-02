@@ -2,7 +2,7 @@
  * ui-choose通用选择插件
  * 基于jQuery
  */
-; + function($) {
+;+function ($) {
     "use strict";
     // 默认实例化配置
     var defaults = {
@@ -19,16 +19,17 @@
     /**
      * ui-choose插件
      */
-    $.fn.ui_choose = function(options) {
+    $.fn.ui_choose = function (options) {
         var _this = $(this),
             _num = _this.length;
         // 当要实例的对象只有一个时，直接实例化返回对象；
         if (_num === 1) {
             return new UI_choose(_this, options);
-        };
+        }
+        ;
         // 当要实例的对象有多个时，循环实例化，不返回对象；
         if (_num > 1) {
-            _this.each(function(index, el) {
+            _this.each(function (index, el) {
                 new UI_choose($(el), options);
             })
         }
@@ -52,7 +53,7 @@
     UI_choose.prototype = {
 
         // init初始化;
-        _init: function() {
+        _init: function () {
             var _data = this.el.data(this._opt.dataKey);
             // 如果已经实例化了，则直接返回
             if (_data)
@@ -82,7 +83,7 @@
         },
 
         // 组建并获取相关的dom元素-ul;
-        _setHtml_ul: function() {
+        _setHtml_ul: function () {
             this._wrap = this.el;
             this._items = this.el.children('li');
             if (this._opt.itemWidth) {
@@ -91,13 +92,13 @@
         },
 
         // 组建并获取相关的dom元素-select;
-        _setHtml_select: function() {
+        _setHtml_select: function () {
             var _ohtml = '<ul class="ui-choose">';
-            this.el.find('option').each(function(index, el) {
+            this.el.find('option').each(function (index, el) {
                 var _this = $(el),
                     _text = _this.text(),
                     _value = _this.prop('value'),
-                    _selected = _this.prop('selected') ? 'selected' : '',
+                    _selected = _this.attr('selected') ? 'selected' : '',
                     _disabled = _this.prop('disabled') ? ' disabled' : '';
                 _ohtml += '<li title="' + _text + '" data-value="' + _value + '" class="' + _selected + _disabled + '">' + _text + '</li> ';
             });
@@ -113,9 +114,9 @@
         },
 
         // 绑定事件；
-        _bindEvent: function() {
+        _bindEvent: function () {
             var _this = this;
-            _this._wrap.on('click', 'li', function() {
+            _this._wrap.on('click', 'li', function () {
                 var _self = $(this);
                 if (_self.hasClass('disabled'))
                     return;
@@ -127,7 +128,7 @@
                 } else { // multiple
                     _self.toggleClass(_this._opt.active);
                     var _val = [];
-                    _this._items.each(function(index, el) {
+                    _this._items.each(function (index, el) {
                         var _el = $(this);
                         if (_el.hasClass(_this._opt.active)) {
                             var _valOrIndex = _this._tag == 'select' ? _el.attr('data-value') : _el.index();
@@ -142,7 +143,7 @@
         },
 
         // change 触发；value：值 ；item：选中的option；
-        _triggerChange: function(value, item) {
+        _triggerChange: function (value, item) {
             item = item || this._wrap;
             this.change(value, item);
             if (typeof this._opt.change == 'function')
@@ -150,14 +151,14 @@
         },
 
         // click 触发；value：值 ；item：选中的option；
-        _triggerClick: function(value, item) {
+        _triggerClick: function (value, item) {
             this.click(value, item);
             if (typeof this._opt.click == 'function')
                 this._opt.click.call(this, value, item);
         },
 
         // 获取或设置值:select
-        _val_select: function(value) {
+        _val_select: function (value) {
             // getValue
             if (arguments.length === 0) {
                 return this.el.val();
@@ -186,7 +187,7 @@
                         this._wrap.children('li[data-value="' + _v + '"]').addClass(this._opt.active);
                     }
                 }
-                if ((value + '') !== (_oValue + '')) {
+                if (value !== _oValue) {
                     this._triggerChange(value);
                 }
             }
@@ -195,7 +196,7 @@
         },
 
         // 获取或设置值:ul
-        _val_ul: function(index) {
+        _val_ul: function (index) {
             // getValue
             if (arguments.length === 0) {
                 var _oActive = this._wrap.children('li.' + this._opt.active);
@@ -207,7 +208,7 @@
                     }
                     var _this = this,
                         _val = [];
-                    _oActive.each(function(index, el) {
+                    _oActive.each(function (index, el) {
                         var _el = $(el);
                         if (_el.hasClass(_this._opt.active)) {
                             _val.push(_el.index());
@@ -237,7 +238,7 @@
                         this._wrap.children('li').eq(_no).addClass(this._opt.active);
                     }
                 }
-                if ((index + '') !== (_oIndex + '')) {
+                if (index !== _oIndex) {
                     this._triggerChange(index);
                 }
             }
@@ -246,30 +247,46 @@
         },
 
         // 获取或设置值
-        val: function() {
+        val: function () {
             return this['_val_' + this._tag].apply(this, arguments);
         },
 
         // 值改变事件；
-        change: function(value, item) {},
+        change: function (value, item) {
+
+        },
 
         // 点击事件；
-        click: function(value, item) {},
+        click: function (value, item) {
+            var select = this.el;
+
+            select.find("option").each(function () {
+                $(this).removeAttr('selected');
+            });
+
+            if (this.multi) {
+                $(value).each(function (key, value) {
+                    select.find("option[value=" + value + "]").attr("selected", "selected");
+                });
+            } else {
+                select.find("option[value=" + value + "]").attr("selected", "selected");
+            }
+        },
 
         // 隐藏
-        hide: function() {
+        hide: function () {
             this._wrap.hide();
             return this;
         },
 
         // 显示
-        show: function() {
+        show: function () {
             this._wrap.show();
             return this;
         },
 
         // 全选
-        selectAll: function() {
+        selectAll: function () {
             if (!this.multi)
                 return this;
             if (this._tag == 'select') {
@@ -278,7 +295,7 @@
                 this.val(_val);
             } else {
                 var _val = [];
-                this._items.not('.disabled').each(function(index, el) {
+                this._items.not('.disabled').each(function (index, el) {
                     _val.push(index);
                 });
                 this.val(_val);
